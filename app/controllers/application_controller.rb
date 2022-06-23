@@ -4,7 +4,7 @@ class ApplicationController < Sinatra::Base
   # Add your routes here
   get "/sneakers" do
     sneakers = Sneaker.all
-    sneakers.to_json
+    sneakers.to_json(include: { reviews: { include: :user } })
   end
   post "/sneakers" do 
     sneakers = Sneaker.create(name: params[:name])
@@ -15,8 +15,7 @@ class ApplicationController < Sinatra::Base
   patch "/sneakers/:id" do
     sneakers = Sneaker.find(params[:id])
     sneakers.update()
-    options = 
-    sneakers.to_json(options) 
+    sneakers.to_json
   end
   
   delete "/sneakers/:id" do
@@ -25,13 +24,4 @@ class ApplicationController < Sinatra::Base
     status 204
   end
 
-  get "/reviews" do
-    revs = Review.all
-    revs.to_json
-  end
-  
-  get "/users" do
-    us = User.all
-    us.to_json
-  end
 end
